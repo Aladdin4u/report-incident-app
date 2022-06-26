@@ -38,6 +38,38 @@ const server = http.createServer((req, res) => {
     })
 })
 
+
+//mongoose & mongo sandbox routes
+// app.get('/add-blog', (req, res) => {
+//     const blog = new Blog({
+//         title: 'new blog 2',
+//         snippet: 'about my new blog',
+//         body: 'more about my new blog'
+//     });
+
+//     blog.save()
+//         .then((result) => {
+//             res.send(result)
+//         })
+//         .catch((err) => console.log(err))
+// })
+
+// app.get('/all-blogs', (req, res) => {
+//     Blog.find()
+//         .then((result) => {
+//             res.send(result)
+//         })
+//         .catch((err) => console.log(err))
+// })
+
+// app.get('/single-blogs', (req, res) => {
+//     Blog.findById("62acc020be3b534aae51b8a1")
+//         .then((result) => {
+//             res.send(result)
+//         })
+//         .catch((err) => console.log(err))
+// })
+
 server.listen(3000, 'localhost', () => {
     console.log('listening for request on port 3000')
 })
