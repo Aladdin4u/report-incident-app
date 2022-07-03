@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const blogRoutes = require('./routes/blogRoutes')
+const bodyParser = require('body-parser');
 require('dotenv').config()
 
 
@@ -21,10 +22,15 @@ app.set('view engine', 'ejs')
 // Middleware & static files
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// Set Ejs templating engine
+app.set("view engine", "ejs");
+
 
 // Home  Page
 app.get('/', (req, res) => {
-    res.redirect('/blogs')
+  res.redirect('/blogs')
 })
 // About page
 app.get('/about', (req, res) => {

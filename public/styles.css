@@ -1,161 +1,111 @@
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-      monospace;
-  }
-  *{
-    margin: 0;
-    color: #333;
-  }
-  body{
-    max-width: 1200;
-    margin: 20px auto;
-    padding: 0 20px;
-  }
-  p, h1, h2, h3, a, ul {
-    margin: 0;
-    padding: 0;
-    text-decoration: none;
-    color: #222;
-  }
-  nav {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 60px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #f2f2f2;
-    text-transform: uppercase;
-  }
-  nav ul {
-    display: flex;
-    justify-content: space-between;
-    margin-left: 20px;
-  }
-  nav li{
-    text-decoration: none;
-    margin-left: 20px;
-  }
-  nav h1{
-    font-size: 3em;
-  }
-  nav p, nav a {
-    color: #e777;
-    font-weight: 300;
-  }
-  footer {
-    color: #e777;
-    text-align: center;
-    margin: 80px auto 20px;
-  }
-  h2 {
-    margin-bottom: 40px;
-  }
-  h3 {
-    text-transform: capitalize;
-    margin-bottom: 8px;
-  }
-  .content {
-    margin-left: 20px;
-  }
-  .navbar .links {
-    margin-left: auto;
-  }
-  .navbar a {
-    margin-left: 16px;
-    text-decoration: none;
-    padding: 6px;
-  }
-  .navbar a:hover {
-    columns: #f1356d;
-  }
-  .content {
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 20px;
-  }
-  
-  /* blog previews /list */
-  .create-blog form{
-    max-width: 400px;
-    margin: 0 auto;
-  }
-  .create-blog input, .create-blog textarea {
-    display: block;
-    width: 100%;
-    margin: 10px 0;
-    padding: 8px;
-  }
-  .create-blog label {
-    display: block;
-    margin-top: 24px;
-  }
-  .create-blog button {
-    margin-top: 20px;
-    background: crimson;
-    color: white;
-    padding: 6px;
-    border: 0;
-    font-size: 1.2em;
-    cursor: pointer;
-  }
-  .blog-preview:hover {
-    box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.2);
-  }
-  .blog-preview h2 {
-    font-size: 20px;
-    color: #f1356d;
-    margin-bottom: 8px;
-  }
-  .blog-preview a{
-    text-decoration: none;
-  }
-  
-  /* blog details page*/
-  .blog-details h2{
-    font-size: 20px;
-    color: #f1356d;
-    margin-bottom: 10px;
-  }
-  
-  .blog-details div{
-    margin: 20px 0;
-  }
-  .blog-details button{
-    background: #f1356d;
-    color: #fff;
-    border: 0;
-    padding: 8px;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
-  /* create a new blog*/
-  .create {
-    max-width: 400px;
-    margin: 0 auto;
-    text-align: center;
-  }
-  .create label{
-    text-align: left;
-    display: block;
-  }
-  .create h2{
-    font-size: 20px;
-    color: #f1356d;
-    margin-bottom: 30px;
-  }
-  .create input, .create textarea, .create select {
-    width: 100%;
-    padding: 6px 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
-    display: block;
-  }
-  .create button{
-    background: #f1356d;
-    color: #fff;
-    border: 0;
-    padding: 8px;
-    border-radius: 8px;
-    cursor: pointer;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap');
+    body{
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 20px;
+      font-family: 'Noto Serif', serif;
+      max-width: 1200px;
+    }
+    p, h1, h2, h3, a, ul{
+      margin: 0;
+      padding: 0;
+      text-decoration: none;
+      color: #222;
+    }
+
+    /* nav & footer styles */
+    nav{
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 60px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+      text-transform: uppercase;
+    }
+    nav ul{
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    nav li{
+      list-style-type: none;
+      margin-left: 20px;
+    }
+    nav h1{
+      font-size: 3em;
+    }
+    nav p, nav a{
+      color: #777;
+      font-weight: 300;
+    }
+    footer{
+      color: #777;
+      text-align: center;
+      margin: 80px auto 20px;
+    }
+    h2{
+      margin-bottom: 40px;
+    }
+    h3{
+      text-transform: capitalize;
+      margin-bottom: 8px;
+    }
+    .content{
+      margin-left: 20px;
+    }
+
+    /* index styles */
+    .blogs a{
+      display: block;
+      margin: 40px 0;
+      padding-left: 30px;
+      border-left: 6px solid crimson;
+    }
+    .blogs a:hover h3{
+      color: crimson;
+    }
+
+    /* details styles */
+    .details{
+      position: relative;
+    }
+    .delete{
+      position: absolute;
+      top: 0;
+      right: 0;
+      border-radius: 50%;
+      padding: 8px;
+    }
+    .delete:hover{
+      cursor: pointer;
+      box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
+    }
+
+    /* create styles */
+    .create-blog form{
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .create-blog input,
+    .create-blog textarea{
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 8px;
+    }
+    .create-blog label{
+      display: block;
+      margin-top: 24px;
+    }
+    textarea{
+      height: 120px;
+    }
+    .create-blog button{
+      margin-top: 20px;
+      background: crimson;
+      color: white;
+      padding: 6px;
+      border: 0;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
