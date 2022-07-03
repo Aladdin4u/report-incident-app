@@ -8,11 +8,12 @@ const PORT = 2021;
 
 
 // connect to mongodb
-const dbURI = process.env.DB_STRING
+let dbURI = process.env.DB_STRING
 mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
   .then((result) => {
-    app.listen(process.env.PORT || PORT)
-    console.log('connected to database') 
+    app.listen(process.env.PORT || PORT, () => {
+      console.log('connected to database')
+    }) 
   })
   .catch((err) => console.log(err))
 
