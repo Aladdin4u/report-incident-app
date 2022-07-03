@@ -3,15 +3,15 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const blogRoutes = require('./routes/blogRoutes')
-const bodyParser = require('body-parser');
 require('dotenv').config()
+const PORT = 2021;
 
 
 // connect to mongodb
 const dbURI = process.env.DB_STRING
 mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
   .then((result) => {
-    app.listen(2022)
+    app.listen(process.env.PORT || PORT)
     console.log('connected to database') 
   })
   .catch((err) => console.log(err))
@@ -22,7 +22,6 @@ app.set('view engine', 'ejs')
 // Middleware & static files
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}))
-app.use(bodyParser.urlencoded({ extended: false }))
 
 // Set Ejs templating engine
 app.set("view engine", "ejs");
