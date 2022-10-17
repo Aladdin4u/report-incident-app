@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap');
+*, *:before, *:after {
+  box-sizing: border-box;
+}
     body{
       max-width: 1200px;
       margin: 20px auto;
@@ -15,6 +18,8 @@
 
     /* nav & footer styles */
     nav{
+      max-width: 600px;
+      margin: 0 auto;
       display: flex;
       justify-content: space-between;
       margin-bottom: 60px;
@@ -38,6 +43,10 @@
       color: #777;
       font-weight: 300;
     }
+    nav a, h1{
+      color: crimson;
+      font-weight: 300;
+    }
     footer{
       color: #777;
       text-align: center;
@@ -55,13 +64,13 @@
     }
 
     /* index styles */
-    .blogs a{
+    .reports a{
       display: block;
       margin: 40px 0;
       padding-left: 30px;
       border-left: 6px solid crimson;
     }
-    .blogs a:hover h3{
+    .reports a:hover h3{
       color: crimson;
     }
 
@@ -82,25 +91,26 @@
     }
 
     /* create styles */
-    .create-blog form{
+    .create-report form{
       max-width: 400px;
       margin: 0 auto;
     }
-    .create-blog input,
-    .create-blog textarea{
+    .create-report input,
+    .create-report textarea,
+    .create-report select{
       display: block;
       width: 100%;
       margin: 10px 0;
       padding: 8px;
     }
-    .create-blog label{
+    .create-report label{
       display: block;
       margin-top: 24px;
     }
     textarea{
       height: 120px;
     }
-    .create-blog button{
+    .create-report button{
       margin-top: 20px;
       background: crimson;
       color: white;
@@ -109,3 +119,70 @@
       font-size: 1.2em;
       cursor: pointer;
     }
+    .container {
+      padding: 0.01em 16px;
+  }
+  .opacity, .hover-opacity:hover {
+    opacity: 0.60;
+}
+.white, .hover-white:hover {
+  color: #000!important;
+  background-color: #fff!important;
+}
+.margin {
+  margin: 16px!important;
+}
+.card-4, .hover-shadow:hover {
+  box-shadow: 0 4px 10px 0 rgb(0 0 0 / 20%), 0 4px 20px 0 rgb(0 0 0 / 19%);
+}
+.red, .hover-red:hover {
+  color: #fff!important;
+  background-color: #f44336!important;
+}
+.center {
+  text-align: center!important;
+}
+.jumbo {
+  font-size: 64px!important;
+}
+.xlarge {
+  font-size: 24px!important;
+}
+.black, .hover-black:hover {
+  color: #fff!important;
+  background-color: #000!important;
+}
+.padding-large {
+  padding: 12px 24px!important;
+}
+.margin-top {
+  margin-top: 16px!important;
+}
+.large {
+  font-size: 18px!important;
+}
+.row-padding, .row-padding>.half, .row-padding>.third, .row-padding>.twothird, .row-padding>.threequarter, .row-padding>.quarter, .row-padding>.col {
+  padding: 0 8px;
+}
+.content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.col, .half, .third, .twothird, .threequarter, .quarter {
+  float: left;
+  width: 100%;
+}
+.padding-32 {
+  padding-top: 32px!important;
+  padding-bottom: 32px!important;
+}
+.text-grey, .hover-text-grey:hover, .text-gray, .hover-text-gray:hover {
+  color: #757575!important;
+}
+.fa-anchor, .fa-coffee {
+  font-size: 200px;
+}
+.light-grey, .hover-light-grey:hover, .light-gray, .hover-light-gray:hover {
+  color: #000!important;
+  background-color: #f1f1f1!important;
+}

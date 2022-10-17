@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/head.ejs') %>
+<body>
+    
+    <%- include('partials/nav.ejs') %>
+
+    <div class="Reports">
+        <h2>All Reports <span style="float: left;"><a href="/logout">Logout</a></span></h2>
+        <% if (reports.length > 0) { %>
+            <% reports.forEach(report => { %>
+                
+                <a class="single" href="/reports/<%= report._id %>">
+                    <h3 class="title"><%= report.title %></h3>
+                    <p class="snippet">Written by: <%= report.user.userNAme %></p>
+                </a>
+
+            <% }) %>
+            
+        <% } else { %>
+            <p>There is no report to display...</p>
+        <% } %>
+    </div>
+
+    <%- include('partials/footer.ejs') %>
+</body>
+</html>

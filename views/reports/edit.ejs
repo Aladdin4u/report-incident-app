@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('../partials/head.ejs') %>
+<body>
+    <%- include('../partials/nav.ejs') %>
+    
+    <div class="create-blog">
+        <form action="/reports/<%= report._id %>?_method=PUT" enctype="multipart/form-data" method="POST">
+            <div class="row">
+                <div class="input-field">
+                    <input type="text" id="title" name="title" value="<%= report.title %>" required>
+                    <label for="title">Report title</label>
+                </div>
+            </div>
+            
+            
+            <div class="row">
+                <div class="input-field">
+                    <select name="withness" id="withness">
+                        <option value="<%= report.victim %> ? 'selected' : '' " selected>victim</option>
+                        <option value="<%= report.bystander %> ? 'selected' : '' ">Bystander</option>
+                    </select>
+                    <label for="snippet">I am </label>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="input-field">
+                    <h5>Tell Us Your Report</h5>
+                    <textarea id="body" name="body" required><%= report.body %></textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field">
+                    <label for="imgUpload">Image</label>
+                    <input type="file"  id="imageUpload" name="file">
+                </div>
+            </div>
+            
+            <div class="row">
+                <input type="submit" value="Save" class="btn">
+                <a href="/dashboard" class="btn orange">Cancel</a>
+             </div>
+        </form>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

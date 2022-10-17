@@ -1,24 +1,21 @@
-const { render } = require('ejs');
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
-const blogRoutes = require('./routes/blogRoutes')
+const morgan = require('morgan')
+const methodOverride = require('method-override')
+const flash = require("express-flash");
+const passport = require('passport')
+const session = require('express-session')
+const MongoStore = require('connect-mongo')
 require('dotenv').config()
-const PORT = 2021;
+const connectDB = require('./config/db')
+const mainRoutes = require('./routes/auth')
+const repRoutes = require('./routes/reports')
 
 
-// connect to mongodb
-let dbURI = process.env.DB_STRING
-mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
-  .then((result) => {
-    app.listen(process.env.PORT || PORT, () => {
-      console.log('connected to database')
-    }) 
-  })
-  .catch((err) => console.log(err))
+require('./config/passport')(passport)
 
-app.set('view engine', 'ejs')
-
+connectDB()
 
 // Middleware & static files
 app.use(express.static('public'));
@@ -27,17 +24,33 @@ app.use(express.urlencoded({extended: true}))
 // Set Ejs templating engine
 app.set("view engine", "ejs");
 
+// Logging
+app.use(morgan('dev'))
 
-// Home  Page
-app.get('/', (req, res) => {
-  res.redirect('/blogs')
-})
-// About page
-app.get('/about', (req, res) => {
-    res.render('about', {title : 'About'})
-})
-// Blog post
-app.use('/blogs', blogRoutes);
+//Use forms for put / delete
+app.use(methodOverride("_method"));
+
+// Session
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({ mongoUrl:process.env.DB_STRING })
+}))
+
+// Passport middleware
+app.use(passport.initialize())
+app.use(passport.session())
+
+//Use flash messages for errors, info, ect...
+app.use(flash());
+
+app.use('/', mainRoutes)
+app.use('/reports', repRoutes)
+
+const PORT = process.env.PORT || 3000
+
+app.listen(PORT, console.log(`server running in ${process.env.NODE_ENV} node on port ${PORT}`))
 
 // 404 page
 app.use((req, res) => {

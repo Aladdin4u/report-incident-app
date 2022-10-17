@@ -37,7 +37,43 @@ const server = http.createServer((req, res) => {
         }
     })
 })
+<div class="reports">
+        <h2>Some Reports</h2>
+        <% if (reports.length > 0) { %>
+            <% reports.forEach(report => { %>
+                
+                <a class="single" href="/reports/<%= report._id %>">
+                    <h3 class="title"><%= report.title %></h3>
+                    <p class="snippet">Written by: <%= report.user.userNAme %></p>
+                </a>
 
+            <% }) %>
+            
+        <% } else { %>
+            <p>There is no reports to display...</p>
+        <% } %>
+     </div>
+/* <script>
+        const trashcan = document.querySelector('a.delete');
+        trashcan.addEventListener('click', (e) => {
+            const endpoint = `/reports/${trashcan.dataset.doc}`;
+
+            fetch(endpoint, {
+                method: 'DELETE'
+            })
+              .then((response) => response.json())
+              .then((data) => window.location.href = data.redirect)
+              .catch(err => console.log(err))
+        })
+</script> */
+
+{/* <div class="details">
+        <h2><%= report.title %> <span><%= report.createdAt.toLocaleString() %></span></h2>
+       <div class="content">
+        <p><%= report.body %></p>
+       </div>
+       <a class="delete" data-doc="<%= report._id %>">delete</a>
+</div> */}
 
 //mongoose & mongo sandbox routes
 // app.get('/add-blog', (req, res) => {

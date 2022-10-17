@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('../partials/head.ejs') %>
+<body>
+    
+    <%- include('../partials/nav.ejs') %>
+    <div class="content">
+      <div class="card-4 margin white">
+        <img src="<%= report.image %>" alt="<%= report.title %>" style="width:100%">
+        <div class="container">
+          <h3><b><%= report.title %></b></h3>
+          <h5><%= report.withness %>, <span class="opacity"><%= report.createdAt.toLocaleString() %></span></h5>
+        </div>
+    
+        <div class="container">
+          <p><%= report.tbody %></p>
+        </div>
+          <form action="/reports/<%= report._id %>?_method=DELETE" method="POST">
+            <button type="submit" class="btn red"><i class="fas fa-trash"></i></button>
+          </form>
+     </div>
+    </div>
+    
+
+    <%- include('../partials/footer.ejs') %>
+
+    
+</body>
+</html>
