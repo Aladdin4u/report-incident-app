@@ -4,20 +4,17 @@
 <body>
     
     <%- include('../partials/nav.ejs') %>
+
     <div class="content">
-      <div class="card-4 margin white">
+      <div class="flex flex-col w-full h-auto border shadow">
         <img src="<%= report.image %>" alt="<%= report.title %>" style="width:100%">
-        <div class="container">
-          <h3><b><%= report.title %></b></h3>
-          <h5><%= report.withness %>, <span class="opacity"><%= report.createdAt.toLocaleString() %></span></h5>
+        <div class="p-8 ">
+          <h3 class="text-gray-900 text-4xl font-bond"><%= report.title %></h3>
+          <h5 class="text-xl">I am <%= report.withness %> <span class="opacity float-right text-sm text-orange-500"><%= report.createdAt.toLocaleString() %></span></h5>
+          <p class="text-gray-500 mt-4"><%= report.tbody %></p>
         </div>
-    
-        <div class="container">
-          <p><%= report.tbody %></p>
-        </div>
-          <form action="/reports/<%= report._id %>?_method=DELETE" method="POST">
-            <button type="submit" class="btn red"><i class="fas fa-trash"></i></button>
-          </form>
+        <a href="/dashboard" class="flex items-center justify-center">
+          <button class="bg-transparent hover:bg-orange-500 text-orange-700 font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded mb-4">Dashboard</button></a>
      </div>
     </div>
     

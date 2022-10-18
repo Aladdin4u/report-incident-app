@@ -3,7 +3,9 @@ const Report = require('../models/Report')
 
 const getdashboard = async (req, res) => {
   try {
-    const reports = await Report.find({ user: req.user.id }).lean()
+    const reports = await Report.find({ user: req.user.id })
+    .sort({ createdAt: 'desc'})
+    .lean()
     res.render('dashboard.ejs', { reports, title: 'dashboard'  })
   } catch (err) {
       console.log(err)
@@ -21,7 +23,7 @@ const report_index = async (req, res) => {
     res.render('report/index', { reports, title: 'Home' })
   } catch (err) {
       console.error(err)
-      res.render('error/404')
+      res.render('/error/404')
   }
 }
 
@@ -32,12 +34,12 @@ const report_details = async (req, res) => {
     .lean()
 
     if (!report) {
-        return res.render('error/404')
+        return res.render('/error/404')
     }
     res.render('Reports/details', { report, title: 'Report Details'})
   } catch (err) {
       console.error(err)
-      res.render('error/404', { title: 'Report not found' })
+      res.render('/error/404', { title: 'Report not found' })
   }
 }
 
@@ -66,11 +68,16 @@ const report_create_post = async (req, res) => {
 
 const report_delete = async (req, res) => {
   try {
+    // Find post by id
+    let report = await Report.findById({ _id: req.params.id });
+    // Delete image from cloudinary
+    await cloudinary.uploader.destroy(report.cloudinaryId);
+    // Delete report from database
     await Report.remove({ _id: req.params.id})
     res.redirect('/dashboard')
   } catch (err) {
       console.error(err)
-      res.redirect('error/404')
+      res.redirect('/error/404')
   }
 }
 
@@ -78,13 +85,13 @@ const report_edit = async (req, res) => {
   const report = await Report.findOne({ _id: req.params.id}).lean()
 
   if (!report) {
-      return res.render('error/404')
+      return res.render('/error/404')
   }
 
   if(report.user != req.user.id) {
       res.redirect('/report')
   } else {
-      res.render('report/edit', { report, title : 'Edit Report'})
+      res.render('reports/edit', { report, title : 'Edit Report'})
   }
 } 
 
@@ -93,13 +100,13 @@ const report_up_edit = async (req, res) => {
       const report = await Report.findById({ _id: req.params.id}).lean()
 
       if (!report) {
-          return res.render('error/404')
+          return res.render('/error/404')
       }
 
       if(report.user != req.user.id) {
           res.redirect('/reports')
       } else {
-          report = await report.findByIdAndUpdate({ _id: res.params.id }, req.body, {
+          report = await Report.findByIdAndUpdate({ _id: res.params.id }, req.body, {
               new: true,
               runValidators: true
           })
@@ -108,7 +115,7 @@ const report_up_edit = async (req, res) => {
       }
   } catch (err) {
       console.error(err)
-      res.redirect('error/404')   
+      // res.redirect('/error/404')   
   }
   
 }

@@ -17,9 +17,13 @@
             <textarea id="tbody" name="tbody" required></textarea>
             <label for="imgUpload">Image</label>
             <input type="file"  id="imageUpload" name="file">
-            <input type="submit" value="Save" class="btn">
-            <a href="/dashboard" class="btn orange">Cancel</a>
+            <input type="submit" value="Save" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
         </form>
+        <div class="content" style="max-width: 400px;">
+            <a href="/dashboard">
+                <button class="w-full bg-transparent hover:bg-rose-500 text-rose-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">Cancel</button>
+            </a>
+        </div>
     </div>
 
     <%- include('../partials/footer.ejs') %>
