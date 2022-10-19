@@ -54,5 +54,5 @@ app.listen(PORT, console.log(`server running in ${process.env.NODE_ENV} node on 
 
 // 404 page
 app.use((req, res) => {
-  res.status(404).render('404', {title : '404'})
+  res.status(404).render('error/404', {title : '404'})
 })
