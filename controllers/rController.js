@@ -6,7 +6,7 @@ const getdashboard = async (req, res) => {
     const reports = await Report.find({ user: req.user.id })
     .sort({ createdAt: 'desc'})
     .lean()
-    res.render('dashboard.ejs', { reports, title: 'dashboard'  })
+    res.render('dashboard.ejs', { reports, title: 'dashboard', name: req.user.userName })
   } catch (err) {
       console.log(err)
       res.render('error/404')
@@ -20,7 +20,7 @@ const report_index = async (req, res) => {
     .sort({ createdAt: 'desc'})
     .lean()
 
-    res.render('report/index', { reports, title: 'Home' })
+    res.render('reports/index', { reports, title: 'Home' })
   } catch (err) {
       console.error(err)
       res.render('/error/404')
@@ -49,8 +49,10 @@ const report_create_get = (req, res) => {
 
 const report_create_post = async (req, res) => {
   try {
+    req.body.user = req.user.id
     // Upload image to cloudinary
     const result = await cloudinary.uploader.upload(req.file.path);
+    console.log(result)
 
     await Report.create({
       title: req.body.title,
@@ -98,6 +100,7 @@ const report_edit = async (req, res) => {
 const report_up_edit = async (req, res) => {
   try {
       const report = await Report.findById({ _id: req.params.id}).lean()
+      
 
       if (!report) {
           return res.render('/error/404')
@@ -106,7 +109,18 @@ const report_up_edit = async (req, res) => {
       if(report.user != req.user.id) {
           res.redirect('/reports')
       } else {
-          report = await Report.findByIdAndUpdate({ _id: res.params.id }, req.body, {
+          const report = await Report.findById({ _id: req.params.id})
+          await cloudinary.uploader.destroy(report.cloudinaryId)
+          report = await Report.findByIdAndUpdate({ _id: res.params.id },
+          { $set:{
+            title: req.body.title,
+            image: result.secure_url,
+            cloudinaryId: result.public_id,
+            withness: req.body.withness,
+            tbody: req.body.tbody,
+            user: req.user.id,
+          }}, 
+          {
               new: true,
               runValidators: true
           })

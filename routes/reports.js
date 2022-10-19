@@ -9,7 +9,7 @@ router.post('/', ensureAuth, upload.single("file"), rController.report_create_po
 router.get('/create', ensureAuth, rController.report_create_get)
 router.get('/:id', ensureAuth, rController.report_details)
 router.get('/edit/:id', ensureAuth, rController.report_edit)
-router.put('/:id', ensureAuth, rController.report_up_edit)
+router.put('/:id', ensureAuth, upload.single("file"), rController.report_up_edit)
 router.delete('/:id', ensureAuth, rController.report_delete)
 
 module.exports = router;
