@@ -6,8 +6,7 @@ const methodOverride = require('method-override')
 const flash = require("express-flash");
 const passport = require('passport')
 const session = require('express-session')
-const MongoStore = require('connect-mongo')
-const cors = require('cors')
+const MongoStore = require('connect-mongo').default
 const connectDB = require('./config/db')
 const mainRoutes = require('./routes/auth')
 const repRoutes = require('./routes/reports')
@@ -38,7 +37,7 @@ app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl:process.env.DB_STRING, touchAfter: 24 * 3600 })
+  store: MongoStore.create({ mongoUrl:process.env.DB_STRING })
 }))
 
 // Passport middleware

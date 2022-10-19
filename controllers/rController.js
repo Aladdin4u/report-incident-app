@@ -115,7 +115,7 @@ const report_up_edit = async (req, res) => {
       }
   } catch (err) {
       console.error(err)
-      // res.redirect('/error/404')   
+      res.redirect('error/404')   
   }
   
 }
