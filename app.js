@@ -32,12 +32,17 @@ app.use(morgan('dev'))
 //Use forms for put / delete
 app.use(methodOverride("_method"));
 
+const clientP = mongoose.connect(
+  'mongodb+srv://aladdin:test1234@nodeblog.plyzua2.mongodb.net/nodeblogtuts?retryWrites=true&w=majority',
+  { useNewUrlParser: true, useUnifiedTopology: true }
+).then(m => m.connection.getClient())
+
 // Session
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: conn })
+  store: MongoStore.create({ mongoUrl: clientP })
 }))
 
 // Passport middleware
