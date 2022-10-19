@@ -7,7 +7,7 @@ const flash = require("express-flash");
 const passport = require('passport')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
-require('dotenv').config()
+require('dotenv').config({ path: "./config/.env" })
 const connectDB = require('./config/db')
 const mainRoutes = require('./routes/auth')
 const repRoutes = require('./routes/reports')
