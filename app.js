@@ -6,7 +6,8 @@ const methodOverride = require('method-override')
 const flash = require("express-flash");
 const passport = require('passport')
 const session = require('express-session')
-const MongoStore = require('connect-mongo')
+const MongoStore = require('connect-mongo')(session)
+const cors = require('cors')
 const connectDB = require('./config/db')
 const mainRoutes = require('./routes/auth')
 const repRoutes = require('./routes/reports')
@@ -32,17 +33,12 @@ app.use(morgan('dev'))
 //Use forms for put / delete
 app.use(methodOverride("_method"));
 
-const clientP = mongoose.connect(
-  'mongodb+srv://aladdin:test1234@nodeblog.plyzua2.mongodb.net/nodeblogtuts?retryWrites=true&w=majority',
-  { useNewUrlParser: true, useUnifiedTopology: true }
-).then(m => m.connection.getClient())
-
 // Session
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: clientP })
+  store: new MongoStore({ mongooseConnection: mongoose.connection })
 }))
 
 // Passport middleware
