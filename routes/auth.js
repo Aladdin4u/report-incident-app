@@ -5,7 +5,7 @@ const homecontroller = require('../controllers/home')
 const rController = require('../controllers/rController')
 const { ensureAuth, ensureGuest } = require('../middleware/auth')
 
-router.get('/', homecontroller.getIndex)
+router.get('/', ensureGuest, homecontroller.getIndex)
 router.get('/about', homecontroller.getAbout)
 router.get('/dashboard', ensureAuth, rController.getdashboard)
 router.get('/login', ensureGuest, authController.getLogin)
