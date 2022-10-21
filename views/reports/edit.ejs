@@ -5,7 +5,7 @@
     <%- include('../partials/nav.ejs') %>
 
     <div class="create-report">
-        <form action="/reports/<%= report._id %>?_method=PUT" enctype="multipart/form-data" method="POST">
+        <form action="/reports/edit/<%= report._id %>?_method=PUT" enctype="multipart/form-data" method="POST">
             <label for="title">Report title</label>
             <input type="text" id="title" name="title" value="<%= report.title %>" required>
             <label for="withness">I am </label>       
@@ -16,7 +16,7 @@
             <label for="tbody">Tell Us Your Report</label>
             <textarea id="tbody" name="tbody" required><%= report.tbody %></textarea>
             <label for="imgUpload">Image</label>
-            <input type="file"  id="imageUpload" value="<%= report.image %>" name="file">
+            <input type="file"  id="imageUpload" name="file">
             <input type="submit" value="Save" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"> 
         </form>
         <div class="content" style="max-width: 400px;">

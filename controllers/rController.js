@@ -100,31 +100,34 @@ const report_edit = async (req, res) => {
 const report_up_edit = async (req, res) => {
   try {
       const report = await Report.findById({ _id: req.params.id}).lean()
-      
 
       if (!report) {
-          return res.render('/error/404')
+          return res.render('error/404')
       }
 
       if(report.user != req.user.id) {
           res.redirect('/reports')
       } else {
-          const report = await Report.findById({ _id: req.params.id})
-          await cloudinary.uploader.destroy(report.cloudinaryId)
-          report = await Report.findByIdAndUpdate({ _id: res.params.id },
-          { $set:{
-            title: req.body.title,
-            image: result.secure_url,
-            cloudinaryId: result.public_id,
-            withness: req.body.withness,
-            tbody: req.body.tbody,
+          let report = await Report.findById({ _id: req.params.id})
+          // Delete image from cloudinary 
+          await cloudinary.uploader.destroy(report.cloudinaryId);
+          // Upload image to cloudinary
+          const result = await cloudinary.uploader.upload(req.file.path);
+
+          const updates = {
+            title: req.body.title || report.title,
+            withness: req.body.withness || report.withness,
+            image: result.secure_url || report.image,
+            cloudinaryId: result.public_id || report.cloudinaryId,
+            tbody: req.body.tbody || report.tbody,
             user: req.user.id,
-          }}, 
-          {
+            }
+          
+          report = await Report.findByIdAndUpdate( { _id: req.params.id} , updates, {
               new: true,
               runValidators: true
           })
-
+          // console.log(report)
           res.redirect('/dashboard')
       }
   } catch (err) {
