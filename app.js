@@ -13,7 +13,6 @@ const mainRoutes = require('./routes/auth')
 const repRoutes = require('./routes/reports')
 
 
-
 require('dotenv').config({ path: "./config/.env" })
 
 require('./config/passport')(passport)
