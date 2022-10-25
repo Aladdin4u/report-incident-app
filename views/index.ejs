@@ -61,5 +61,12 @@
     
 
     <%- include('partials/footer.ejs') %>
+    <script>
+        const button = document.querySelector("#menu-button");
+        const menu = document.querySelector("#menu");
+        button.addEventListener("click", () => {
+            menu.classList.toggle("hidden");
+        });
+    </script>
 </body>
 </html>

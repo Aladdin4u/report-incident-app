@@ -4,7 +4,7 @@
     style="max-width: 600px"
   >
     <div>
-      <a href="#" class="font-bold text-2xl text-orange-500 uppercase">
+      <a href="/" class="font-bold text-2xl text-orange-500 uppercase">
         Report App
       </a>
     </div>
@@ -35,13 +35,31 @@
           d="M4 6h16M4 12h16M4 18h16"
         />
       </svg>
+      <button class="hidden">
+        <svg
+          class="w-8 h-8"
+          id="menu-exit"
+          class="h-8 w-8 cursor-pointer"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          ></path>
+        </svg>
+      </button>
     </div>
 
     <div class="hidden w-full" id="menu">
       <ul class="pt-4 text-base text-gray-700 flex flex-col">
         <li>
           <a
-            class="py-2 block text-white bg-orange-700 rounded text-center"
+            class="py-2 block text-white bg-orange-500 hover:bg-orange-700 rounded text-center"
             href="/"
             >Home</a
           >
@@ -56,15 +74,15 @@
         <li>
           <a
             class="py-2 block text-gray-700 rounded hover:bg-gray-100 text-center"
-            href="/reports"
-            >Reports</a
+            href="/reports/create"
+            >New Report</a
           >
         </li>
         <li>
           <a
             class="py-2 block text-gray-700 rounded hover:bg-gray-100 text-center"
-            href="/reports/create"
-            >New Report</a
+            href="/reports"
+            >Reports</a
           >
         </li>
         <li>
@@ -76,7 +94,7 @@
         </li>
         <li>
           <a
-            class="py-2 block text-gray-700 rounded hover:bg-gray-100 text-center"
+            class="py-2 block text-gray-700 rounded hover:bg-gray-100 hover:text-red-700 text-center"
             href="/logout"
             >Logout</a
           >

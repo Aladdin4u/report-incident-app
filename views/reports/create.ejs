@@ -1,31 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-    <%- include('../partials/head.ejs') %>
-<body>
+  <%- include('../partials/head.ejs') %>
+  <body>
     <%- include('../partials/nav.ejs') %>
-    
+
     <div class="create-report">
-        <form action="/reports" enctype="multipart/form-data" method="POST">
-            <label for="title">Report title</label>
-            <input type="text" id="title" name="title" required>
-            <label for="withness">I am </label>       
-            <select name="withness" id="withness">
-                <option value="victim" selected>victim</option>
-                <option value="bystander">Bystander</option>
-            </select>
-            <label for="tbody">Tell Us Your Report</label>
-            <textarea id="tbody" name="tbody" required></textarea>
-            <label for="imgUpload">Image</label>
-            <input type="file"  id="imageUpload" name="file">
-            <input type="submit" value="Save" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-        </form>
-        <div class="content" style="max-width: 400px;">
-            <a href="/dashboard">
-                <button class="w-full bg-transparent hover:bg-rose-500 text-rose-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">Cancel</button>
-            </a>
-        </div>
+      <form action="/reports" enctype="multipart/form-data" method="POST">
+        <label for="title">Report title</label>
+        <input type="text" id="title" name="title" required />
+        <label for="withness">I am </label>
+        <select name="withness" id="withness">
+          <option value="victim" selected>victim</option>
+          <option value="bystander">Bystander</option>
+        </select>
+        <label for="tbody">Tell Us Your Report</label>
+        <textarea id="tbody" name="tbody" required></textarea>
+        <label for="imgUpload">Image</label>
+        <input type="file" id="imageUpload" name="file" />
+        <input
+          type="submit"
+          value="Save"
+          class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+        />
+      </form>
+      <div class="content" style="max-width: 400px">
+        <a href="/dashboard">
+          <button
+            class="w-full bg-transparent hover:bg-rose-500 text-rose-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+          >
+            Cancel
+          </button>
+        </a>
+      </div>
     </div>
 
     <%- include('../partials/footer.ejs') %>
-</body>
+    <script>
+      const button = document.querySelector("#menu-button");
+      const menu = document.querySelector("#menu");
+      button.addEventListener("click", () => {
+        menu.classList.toggle("hidden");
+      });
+    </script>
+  </body>
 </html>

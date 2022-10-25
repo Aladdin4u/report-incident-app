@@ -27,12 +27,12 @@
                 <div>
                     <% if (locals.messages.errors) { %>
                         <% messages.errors.forEach( el => { %>
-                            <div class="text-rose-700 font-bold"><%= el.msg %></div>
+                            <div class="text-red-700 font-bold"><%= el.msg %></div>
                         <% }) %>    
                     <% } %>
                 </div>
                 
-                <div class="mt-4 text-center text-gray-900">Have an account <a href="/login" class="text-rose-700 font-bold">login</a></div>
+                <div class="mt-4 text-center text-gray-900">Have an account <a href="/login" class="text-red-700 font-bold">login</a></div>
             </div>
             <div class="flex flex-col md:flex-row md:-mx-2">
                 <button type="submit" class="bg-blue-600 text-sm mt-4 md:mx-2 rounded-lg py-2 px-4 block w-full focus:outline-none focus:shadow-outline">
@@ -44,5 +44,12 @@
     
    
     <%- include('partials/footer.ejs') %>
+    <script>
+        const button = document.querySelector("#menu-button");
+        const menu = document.querySelector("#menu");
+        button.addEventListener("click", () => {
+            menu.classList.toggle("hidden");
+        });
+    </script>
 </body>
 </html>

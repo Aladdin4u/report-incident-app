@@ -4,10 +4,12 @@
   <body>
     <%- include('partials/nav.ejs') %>
     <div class="content">
-      <div class="text-center">
-        <h3 class="font-bold text-2xl capitalize text-orange-500">Dashboard</h3>
-        <h6 class="text-gray-900">Welcome <%= name %></h6>
-        <p class="text-gray-500 mb-4">Here are your reports</p>
+      <div class="">
+        <h3 class="text-center font-bold text-2xl capitalize text-orange-500">
+          Dashboard
+        </h3>
+        <h6 class="text-center text-gray-900">Welcome <%= name %></h6>
+        <p class="text-center text-gray-500 mb-4">Here are your reports</p>
 
         <% if (reports.length > 0) { %> <% reports.forEach(report => { %>
         <div
@@ -77,5 +79,12 @@
     </div>
 
     <%- include('partials/footer.ejs') %>
+    <script>
+      const button = document.querySelector("#menu-button");
+      const menu = document.querySelector("#menu");
+      button.addEventListener("click", () => {
+        menu.classList.toggle("hidden");
+      });
+    </script>
   </body>
 </html>

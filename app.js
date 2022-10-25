@@ -7,7 +7,6 @@ const flash = require("express-flash");
 const passport = require("passport");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
-const cors = require("cors");
 const connectDB = require("./config/db");
 const mainRoutes = require("./routes/auth");
 const repRoutes = require("./routes/reports");
@@ -26,7 +25,9 @@ app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
 // Logging
-app.use(morgan("dev"));
+if(process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'))
+}
 
 //Use forms for put / delete
 app.use(methodOverride("_method"));
