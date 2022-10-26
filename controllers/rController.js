@@ -44,7 +44,7 @@ const report_details = async (req, res) => {
     if (!report) {
       return res.render("/error/404");
     }
-    res.render("Reports/details", { report, title: "Report Details", users });
+    res.render("reports/details", { report, title: "Report Details", users });
   } catch (err) {
     console.error(err);
     res.render("/error/404", { title: "Report not found" });
@@ -53,7 +53,7 @@ const report_details = async (req, res) => {
 
 const report_create_get = (req, res) => {
   const users = req.user;
-  res.render("Reports/create", { title: "Create a new Report", users });
+  res.render("reports/create", { title: "Create a new Report", users });
 };
 
 const report_create_post = async (req, res) => {
