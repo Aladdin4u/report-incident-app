@@ -22,7 +22,7 @@ Utilized callback functions in the server to try and build a modular and scalabl
 
 Demo Email: demo@demo.com
 
-Demo password: demo
+Demo password: demo12345
 
 ## Installation:
 
