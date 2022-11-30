@@ -3,8 +3,7 @@ Report App for user to create, edit and delete report with the details with what
 
 **Link to project:** https://report-application-v1.herokuapp.com/
 
-![report app](https://user-images.githubusercontent.com/101972392/196623517-38c4945c-3e4c-4d2c-8f4c-5b89c6564b9c.jpg)
-![report-1](https://user-images.githubusercontent.com/101972392/196623553-33c8b7a0-1b0d-4746-86e2-69f546e9acad.jpg)
+![reportAplication](https://user-images.githubusercontent.com/101972392/204688430-f0d44a27-6e92-4a95-a770-e1f08b11e7a6.gif)
 
 ## How It's Made:
 
