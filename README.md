@@ -7,7 +7,7 @@ Report App for user to create, edit and delete report with the details with what
 
 ## How It's Made:
 
-**Tech used:**![HTML5 BADGE](https://img.shields.io/static/v1?label=|&message=HTML5&color=23555f&style=plastic&logo=html5)![CSS BADGE](https://img.shields.io/static/v1?label=|&message=CSS3&color=285f65&style=plastic&logo=css3)![JAVASCRIPT BADGE](https://img.shields.io/static/v1?label=|&message=JAVASCRIPT&color=3c7f5d&style=plastic&logo=javascript)![NODE BADGE](https://img.shields.io/static/v1?label=|&message=NODE.JS&color=2b625f&style=plastic&logo=node.js)![TAILWIND BADGE](https://img.shields.io/static/v1?label=|&message=TAILWIND&color=316c5e&style=plastic&logo=tailwindcss)![EXPRESS BADGE](https://img.shields.io/static/v1?label=|&message=EXPRESS&color=bbb111&style=plastic&logo=express)![MONGODB BADGE](https://img.shields.io/static/v1?label=|&message=MONGO-DB&color=cdd148&style=plastic&logo=mongodb)
+**Tech used:**<p>![HTML5 BADGE](https://img.shields.io/static/v1?label=|&message=HTML5&color=23555f&style=plastic&logo=html5) ![CSS BADGE](https://img.shields.io/static/v1?label=|&message=CSS3&color=285f65&style=plastic&logo=css3) ![JAVASCRIPT BADGE](https://img.shields.io/static/v1?label=|&message=JAVASCRIPT&color=3c7f5d&style=plastic&logo=javascript) ![NODE BADGE](https://img.shields.io/static/v1?label=|&message=NODE.JS&color=2b625f&style=plastic&logo=node.js) ![TAILWIND BADGE](https://img.shields.io/static/v1?label=|&message=TAILWIND&color=316c5e&style=plastic&logo=tailwindcss) ![EXPRESS BADGE](https://img.shields.io/static/v1?label=|&message=EXPRESS&color=bbb111&style=plastic&logo=express) ![MONGODB BADGE](https://img.shields.io/static/v1?label=|&message=MONGO-DB&color=cdd148&style=plastic&logo=mongodb)</p>
 
 ## Optimizations
 
