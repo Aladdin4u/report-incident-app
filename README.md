@@ -3,12 +3,11 @@ Report App for user to create, edit and delete report with the details with what
 
 **Link to project:** https://report-application-v1.herokuapp.com/
 
-![report app](https://user-images.githubusercontent.com/101972392/196623517-38c4945c-3e4c-4d2c-8f4c-5b89c6564b9c.jpg)
-![report-1](https://user-images.githubusercontent.com/101972392/196623553-33c8b7a0-1b0d-4746-86e2-69f546e9acad.jpg)
+![reportAplication](https://user-images.githubusercontent.com/101972392/204688430-f0d44a27-6e92-4a95-a770-e1f08b11e7a6.gif)
 
 ## How It's Made:
 
-**Tech used:** HTML, CSS, JavaScript, Node.js Express, ejs, Tailwind CSS, MongoDB
+**Tech used:**<p>![HTML5 BADGE](https://img.shields.io/static/v1?label=|&message=HTML5&color=23555f&style=plastic&logo=html5) ![CSS BADGE](https://img.shields.io/static/v1?label=|&message=CSS3&color=285f65&style=plastic&logo=css3) ![JAVASCRIPT BADGE](https://img.shields.io/static/v1?label=|&message=JAVASCRIPT&color=3c7f5d&style=plastic&logo=javascript) ![NODE BADGE](https://img.shields.io/static/v1?label=|&message=NODE.JS&color=2b625f&style=plastic&logo=node.js) ![TAILWIND BADGE](https://img.shields.io/static/v1?label=|&message=TAILWIND&color=316c5e&style=plastic&logo=tailwindcss) ![EXPRESS BADGE](https://img.shields.io/static/v1?label=|&message=EXPRESS&color=bbb111&style=plastic&logo=express) ![MONGODB BADGE](https://img.shields.io/static/v1?label=|&message=MONGO-DB&color=cdd148&style=plastic&logo=mongodb)</p>
 
 ## Optimizations
 
@@ -22,7 +21,7 @@ Utilized callback functions in the server to try and build a modular and scalabl
 
 Demo Email: demo@demo.com
 
-Demo password: demo
+Demo password: demo12345
 
 ## Installation:
 
