@@ -9,7 +9,7 @@ const initialreports = [
     },
     {
         title: "fighting",
-        withness: "Victim",
+        withness: "victim",
         tbody: "fighting could you define the complexity of the grey area.",
         img: ["img1.jpg"]
     },

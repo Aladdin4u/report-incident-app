@@ -9,7 +9,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const connectDB = require("./config/db");
 const mainRoutes = require("./routes/auth");
-const repRoutes = require("./routes/reports");
+const reportRoutes = require("./routes/reports");
 
 require("dotenv").config({ path: "./config/.env" });
 
@@ -20,13 +20,14 @@ connectDB();
 // Middleware & static files
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Set Ejs templating engine
 app.set("view engine", "ejs");
 
 // Logging
-if(process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'))
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
 }
 
 //Use forms for put / delete
@@ -50,7 +51,7 @@ app.use(passport.session());
 app.use(flash());
 
 app.use("/", mainRoutes);
-app.use("/reports", repRoutes);
+app.use("/reports", reportRoutes);
 
 const PORT = process.env.PORT || 3000;
 

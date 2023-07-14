@@ -8,7 +8,7 @@ module.exports = {
       const reports = await Report.find({ user: req.user.id })
         .sort({ createdAt: "desc" })
         .lean();
-      res.render("dashboard.ejs", {
+      res.status(200).render("dashboard.ejs", {
         reports,
         title: "dashboard",
         name: req.user.userName,
@@ -27,7 +27,7 @@ module.exports = {
         .sort({ createdAt: "desc" })
         .lean();
   
-      res.render("reports/index", { reports, title: "Home", users });
+      res.status(200).render("reports/index", { reports, title: "Home", users });
     } catch (err) {
       console.error(err);
       res.render("/error/404");
@@ -43,7 +43,7 @@ module.exports = {
       if (!report) {
         return res.render("/error/404");
       }
-      res.render("reports/details", { report, title: "Report Details", users });
+      res.status(200).render("reports/details", { report, title: "Report Details", users });
     } catch (err) {
       console.error(err);
       res.render("/error/404", { title: "Report not found" });
@@ -51,7 +51,7 @@ module.exports = {
   },
   reportCreateGet: async function (req, res) {
     const users = req.user;
-    res.render("reports/create", { title: "Create a new Report", users });
+    res.status(200).render("reports/create", { title: "Create a new Report", users });
   },
   reportCreatePost: async function (req, res) {
     try {
@@ -69,7 +69,7 @@ module.exports = {
         tbody: req.body.tbody,
         user: req.user.id,
       });
-      res.redirect("/dashboard");
+      res.status(201).redirect("/dashboard");
     } catch (err) {
       console.log(err);
     }
@@ -98,7 +98,7 @@ module.exports = {
     }
   
     if (report.user != req.user.id) {
-      res.redirect("/report");
+      res.status(200).redirect("/report");
     } else {
       res.render("reports/edit", { report, title: "Edit Report", users });
     }
@@ -135,7 +135,7 @@ module.exports = {
           runValidators: true,
         });
         // console.log(report)
-        res.redirect("/dashboard");
+        res.status(200).redirect("/dashboard");
       }
     } catch (err) {
       console.error(err);

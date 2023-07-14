@@ -2,16 +2,49 @@ const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../index");
 const Report = require("../models/Report");
+const User = require("../models/User");
 const helper = require("./test_helper");
 const api = supertest(app);
 
+const userOne = {
+  userName: "demo",
+  email: "demo@demo.com",
+  password: "demo12345",
+};
 beforeEach(async () => {
-  await report.deleteMany({});
+  await User.deleteMany();
+  await Report.deleteMany({});
   const reportObjects = helper.initialreports.map(
     (report) => new Report(report)
   );
   const promiseArray = reportObjects.map((report) => report.save());
   await Promise.all(promiseArray);
+});
+
+test("should sign up a new user", async () => {
+  const response = await api.post("/signup").send(userOne).expect(201);
+});
+
+test("should not login nonexistent user", async () => {
+  const response = await api
+    .post("/login")
+    .send({
+      email: userOne.email,
+      password: "wrongpassword",
+    })
+    .expect(400);
+});
+
+test("should login existing user", async () => {
+  const response = await api
+    .post("/login")
+    .send({
+      email: userOne.email,
+      password: userOne.password,
+    })
+    .expect(200);
+  const user = await User.findOne(response.userName);
+  expect(user.userName).toBe(userOne.userName);
 });
 
 test("all reports are returned", async () => {
@@ -28,8 +61,9 @@ test("a specific report is within the returned reports", async () => {
 test("a valid report can be added", async () => {
   const newreport = {
     title: "sexual harrsement",
-    withness: "Victim",
-    tbody: "sexual harrsement could you define the complexity of the grey area.",
+    withness: "victim",
+    tbody:
+      "sexual harrsement could you define the complexity of the grey area.",
     img: ["img1.jpg"],
   };
   await api
@@ -46,7 +80,7 @@ test("a valid report can be added", async () => {
 
 test("report without title is not added", async () => {
   const newreport = {
-    withness: "Victim",
+    withness: "victim",
     tbody: "best report in England with free wifi, and accomodation",
     img: ["img1.jpg"],
   };
@@ -80,6 +114,10 @@ test("a report can be deleted", async () => {
 
   const contents = reportAtEnd.map((r) => r.title);
   expect(contents).not.toContain(reportToDelete.title);
+});
+
+test("should logout already login user", async () => {
+  await api.post("/logout").expect(200);
 });
 
 afterAll(async () => {
