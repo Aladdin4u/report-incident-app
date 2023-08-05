@@ -4,8 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=production node index",
-    "dev": "cross-env NODE_ENV=development nodemon index",
-    "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
+    "dev": "cross-env NODE_ENV=development nodemon index"
   },
   "author": "",
   "license": "ISC",
@@ -37,11 +36,5 @@
   },
   "devDependencies": {
     "gh-pages": "^4.0.0",
-    "jest": "^29.5.0",
-    "supertest": "^6.3.3"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "globalTeardown": "./tests/teardown.js"
   }
 }
