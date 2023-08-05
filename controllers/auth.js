@@ -1,6 +1,7 @@
 const passport = require("passport");
 const validator = require("validator");
 const User = require("../models/User");
+const transport = require("../utils/sendEmail")
 
 exports.getLogin = (req, res) => {
   const users = req.user;
@@ -25,7 +26,7 @@ exports.postLogin = (req, res, next) => {
 
   if (validationErrors.length) {
     req.flash("errors", validationErrors);
-    return res.status(400).redirect("/login");
+    return res.redirect("/login");
   }
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
@@ -37,14 +38,14 @@ exports.postLogin = (req, res, next) => {
     }
     if (!user) {
       req.flash("errors", info);
-      return res.status(400).redirect("/login");
+      return res.redirect("/login");
     }
     req.logIn(user, (err) => {
       if (err) {
         return next(err);
       }
       req.flash("success", { msg: "Success! You are logged in." });
-      res.status(200).redirect(req.session.returnTo || "/dashboard");
+      res.redirect(req.session.returnTo || "/dashboard");
     });
   })(req, res, next);
 };
@@ -57,7 +58,7 @@ exports.logout = (req, res) => {
     if (err)
       console.log("Error : Failed to destroy the session during logout.", err);
     req.user = null;
-    return res.status(200).redirect("/");
+    return res.redirect("/");
   });
 };
 
@@ -86,7 +87,7 @@ exports.postSignup = (req, res, next) => {
 
   if (validationErrors.length) {
     req.flash("errors", validationErrors);
-    return res.status(400).json(validationErrors).redirect("../signup");
+    return res.json(validationErrors).redirect("../signup");
   }
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
@@ -108,7 +109,7 @@ exports.postSignup = (req, res, next) => {
         req.flash("errors", {
           msg: "Account with that email address or username already exists.",
         });
-        return res.status(400).redirect("../signup");
+        return res.redirect("../signup");
       }
       user.save((err) => {
         if (err) {
@@ -118,9 +119,104 @@ exports.postSignup = (req, res, next) => {
           if (err) {
             return next(err);
           }
-          res.status(201).redirect("/dashboard");
+          res.redirect("/dashboard");
         });
       });
     }
   );
+};
+
+exports.getForgotPassword = (req, res) => {
+  const users = req.user;
+  res.render("forgotpassword", {
+    title: "Forgot password",
+    users,
+  });
+};
+
+exports.postForgotPassword = (req, res, next) => {
+  const user = await User.find(u => u.email === req.body.email);
+  
+  if (!user) {
+    req.flash("error", { msg: "No account with that email address exists." });
+    return res.redirect("/forgotpassword");
+  }
+
+  const token = (await promisify(crypto.randomBytes)(20)).toString('hex');
+  user.resetPasswordToken = token;
+  user.resetPasswordExpires = Date.now() + 3600000;
+
+  const resetEmail = {
+    to: user.email,
+    from: 'passwordreset@report.com',
+    subject: 'Password Reset',
+    text: `
+      You are receiving this because you (or someone else) have requested the reset of the password for your account.
+      Please click on the following link, or paste this into your browser to complete the process:
+      http://${req.headers.host}/reset/${token}
+      If you did not request this, please ignore this email and your password will remain unchanged.
+    `,
+  };
+
+  await transport.sendMail(resetEmail);
+  req.flash('info', {msg: `An e-mail has been sent to ${user.email} with further instructions.`});
+
+  res.redirect('/forgotpassword');
+};
+
+exports.getResetPassword = (req, res) => {
+  const users = req.user;
+  const user = await User.find(u => (
+    (u.resetPasswordExpires > Date.now()) &&
+    crypto.timingSafeEqual(Buffer.from(u.resetPasswordToken), Buffer.from(req.params.token))
+  ));
+
+  if (!user) {
+    req.flash('error', 'Password reset token is invalid or has expired.');
+    return res.redirect('/forgotpassword');
+  }
+
+  res.render("resetpassword", {
+    title: "Reset password",
+    users,
+  });
+};
+
+exports.postResetPassword = (req, res, next) => {
+  const validationErrors = [];
+  const user = await User.find(u => (
+    (u.resetPasswordExpires > Date.now()) &&
+    crypto.timingSafeEqual(Buffer.from(u.resetPasswordToken), Buffer.from(req.params.token))
+  ));
+
+  if (!user) {
+    req.flash("error", { msg: "Password reset token is invalid or has expired." });
+    return res.redirect("/forgotpassword");
+  }
+
+  if (req.body.password !== req.body.confirmPassword) {
+    validationErrors.push({ msg: "Passwords do not match" });
+  }
+  if (validationErrors.length) {
+    req.flash("errors", validationErrors);
+    return res.json(validationErrors).redirect("../signup");
+  }
+  
+  user.password = req.body.password;
+  delete user.resetPasswordToken;
+  delete user.resetPasswordExpires;
+
+  const resetEmail = {
+    to: user.email,
+    from: 'passwordreset@report.com',
+    subject: 'Your password has been changed',
+    text: `
+    This is a confirmation that the password for your account "${user.email}" has just been changed.
+    `,
+  };
+
+  await transport.sendMail(resetEmail);
+  req.flash('success', {msg: `Success! Your password has been changed.`});
+
+  res.redirect('/');
 };
