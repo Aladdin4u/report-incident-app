@@ -7,4 +7,4 @@ const transport = nodemailer.createTransport(
     })
 );
 
-export default transport;
+exports.transport;

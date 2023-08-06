@@ -1,16 +1,11 @@
-var CryptoJS = require("crypto-js");
+const { randomBytes, timingSafeEqual } = require("crypto");
 
-var data = [{ id: 1 }, { id: 2 }];
+const randomToken = randomBytes(32).toString("hex");
+const promisify = (a,b) => {
+    return timingSafeEqual(Buffer.from(a), Buffer.from(b))
+}
 
-// Encrypt
-var ciphertext = CryptoJS.AES.encrypt(
-  JSON.stringify(data),
-  "secret key 123"
-).toString();
-console.log(ciphertext);
-// Decrypt
-var bytes = CryptoJS.AES.decrypt(ciphertext, "secret key 123");
-var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-
-console.log(decryptedData); // [{id: 1}, {id: 2}]
-console.log(CryptoJS.HmacSHA1("Message", "Keyss"));
+module.exports = {
+    randomToken,
+    promisify
+}

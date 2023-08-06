@@ -1,7 +1,8 @@
 const passport = require("passport");
 const validator = require("validator");
 const User = require("../models/User");
-const transport = require("../utils/sendEmail")
+const transport = require("../utils/sendEmail");
+const { randomToken, promisify } = require("../utils/crypto");
 
 exports.getLogin = (req, res) => {
   const users = req.user;
@@ -86,8 +87,7 @@ exports.postSignup = (req, res, next) => {
     validationErrors.push({ msg: "Passwords do not match" });
 
   if (validationErrors.length) {
-    req.flash("errors", validationErrors);
-    return res.json(validationErrors).redirect("../signup");
+    req.flash("errors", { msg: validationErrors });
   }
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
@@ -109,7 +109,6 @@ exports.postSignup = (req, res, next) => {
         req.flash("errors", {
           msg: "Account with that email address or username already exists.",
         });
-        return res.redirect("../signup");
       }
       user.save((err) => {
         if (err) {
@@ -134,22 +133,23 @@ exports.getForgotPassword = (req, res) => {
   });
 };
 
-exports.postForgotPassword = (req, res, next) => {
-  const user = await User.find(u => u.email === req.body.email);
-  
+exports.postForgotPassword = async (req, res, next) => {
+  const user = await User.findone({ email: req.body.email });
+
   if (!user) {
     req.flash("error", { msg: "No account with that email address exists." });
     return res.redirect("/forgotpassword");
   }
 
-  const token = (await promisify(crypto.randomBytes)(20)).toString('hex');
-  user.resetPasswordToken = token;
-  user.resetPasswordExpires = Date.now() + 3600000;
+  user.token = {
+    resetPasswordToken: randomToken,
+    resetPasswordExpires: Date.now() + 3600000,
+  };
 
   const resetEmail = {
     to: user.email,
-    from: 'passwordreset@report.com',
-    subject: 'Password Reset',
+    from: "passwordreset@report.com",
+    subject: "Password Reset",
     text: `
       You are receiving this because you (or someone else) have requested the reset of the password for your account.
       Please click on the following link, or paste this into your browser to complete the process:
@@ -159,38 +159,51 @@ exports.postForgotPassword = (req, res, next) => {
   };
 
   await transport.sendMail(resetEmail);
-  req.flash('info', {msg: `An e-mail has been sent to ${user.email} with further instructions.`});
-
-  res.redirect('/forgotpassword');
-};
-
-exports.getResetPassword = (req, res) => {
-  const users = req.user;
-  const user = await User.find(u => (
-    (u.resetPasswordExpires > Date.now()) &&
-    crypto.timingSafeEqual(Buffer.from(u.resetPasswordToken), Buffer.from(req.params.token))
-  ));
-
-  if (!user) {
-    req.flash('error', 'Password reset token is invalid or has expired.');
-    return res.redirect('/forgotpassword');
-  }
-
-  res.render("resetpassword", {
-    title: "Reset password",
-    users,
+  req.flash("info", {
+    msg: `An e-mail has been sent to ${user.email} with further instructions.`,
   });
+
+  res.redirect("/forgotpassword");
 };
 
-exports.postResetPassword = (req, res, next) => {
-  const validationErrors = [];
-  const user = await User.find(u => (
-    (u.resetPasswordExpires > Date.now()) &&
-    crypto.timingSafeEqual(Buffer.from(u.resetPasswordToken), Buffer.from(req.params.token))
-  ));
+exports.getResetPassword = async (req, res) => {
+  const users = req.user;
+  const user = await User.find({
+    token: { resetPasswordToken: req.params.token },
+  });
 
-  if (!user) {
-    req.flash("error", { msg: "Password reset token is invalid or has expired." });
+  let token = user.token;
+  // check if the token is valid
+  const validToken =
+    token.resetPasswordExpires > Date.now() &&
+    promisify(token.resetPasswordToken, req.params.token);
+
+  if (validToken) {
+    res.render("resetpassword", {
+      title: "Reset password",
+      users,
+    });
+  } else {
+    req.flash("error", "Password reset token is invalid or has expired.");
+    return res.redirect("/forgotpassword");
+  }
+};
+
+exports.postResetPassword = async (req, res, next) => {
+  const validationErrors = [];
+  const user = await User.findone(
+    (u) =>
+      u.resetPasswordExpires > Date.now() &&
+      crypto.timingSafeEqual(
+        Buffer.from(u.resetPasswordToken),
+        Buffer.from(req.params.token)
+      )
+  );
+
+  if (!user.token) {
+    req.flash("error", {
+      msg: "Password reset token is invalid or has expired.",
+    });
     return res.redirect("/forgotpassword");
   }
 
@@ -201,22 +214,22 @@ exports.postResetPassword = (req, res, next) => {
     req.flash("errors", validationErrors);
     return res.json(validationErrors).redirect("../signup");
   }
-  
+
   user.password = req.body.password;
   delete user.resetPasswordToken;
   delete user.resetPasswordExpires;
 
   const resetEmail = {
     to: user.email,
-    from: 'passwordreset@report.com',
-    subject: 'Your password has been changed',
+    from: "passwordreset@report.com",
+    subject: "Your password has been changed",
     text: `
     This is a confirmation that the password for your account "${user.email}" has just been changed.
     `,
   };
 
   await transport.sendMail(resetEmail);
-  req.flash('success', {msg: `Success! Your password has been changed.`});
+  req.flash("success", { msg: `Success! Your password has been changed.` });
 
-  res.redirect('/');
+  res.redirect("/");
 };
