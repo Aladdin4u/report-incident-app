@@ -134,15 +134,16 @@ exports.getForgotPassword = (req, res) => {
 };
 
 exports.postForgotPassword = async (req, res, next) => {
-  const user = await User.findone({ email: req.body.email });
+  const user = await User.find({ email: req.body.email });
 
   if (!user) {
     req.flash("error", { msg: "No account with that email address exists." });
     return res.redirect("/forgotpassword");
   }
 
+  const token = randomToken;
   user.token = {
-    resetPasswordToken: randomToken,
+    resetPasswordToken: token,
     resetPasswordExpires: Date.now() + 3600000,
   };
 
@@ -191,14 +192,9 @@ exports.getResetPassword = async (req, res) => {
 
 exports.postResetPassword = async (req, res, next) => {
   const validationErrors = [];
-  const user = await User.findone(
-    (u) =>
-      u.resetPasswordExpires > Date.now() &&
-      crypto.timingSafeEqual(
-        Buffer.from(u.resetPasswordToken),
-        Buffer.from(req.params.token)
-      )
-  );
+  const user = await User.find({
+    token: { resetPasswordToken: req.params.token },
+  });
 
   if (!user.token) {
     req.flash("error", {
@@ -211,13 +207,13 @@ exports.postResetPassword = async (req, res, next) => {
     validationErrors.push({ msg: "Passwords do not match" });
   }
   if (validationErrors.length) {
-    req.flash("errors", validationErrors);
-    return res.json(validationErrors).redirect("../signup");
+    req.flash("errors", {msg: validationErrors});
+    return res.redirect("../signup");
   }
 
   user.password = req.body.password;
-  delete user.resetPasswordToken;
-  delete user.resetPasswordExpires;
+  user.token = {}
+  await user.save();
 
   const resetEmail = {
     to: user.email,
