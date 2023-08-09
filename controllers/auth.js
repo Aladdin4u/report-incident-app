@@ -1,7 +1,7 @@
 const passport = require("passport");
 const validator = require("validator");
 const User = require("../models/User");
-const transport = require("../utils/sendEmail");
+const sendEmail = require("../utils/sendEmail");
 const { randomToken, promisify } = require("../utils/crypto");
 
 exports.getLogin = (req, res) => {
@@ -134,7 +134,7 @@ exports.getForgotPassword = (req, res) => {
 };
 
 exports.postForgotPassword = async (req, res, next) => {
-  const user = await User.find({ email: req.body.email });
+  const user = await User.findOne({ email: req.body.email });
 
   if (!user) {
     req.flash("error", { msg: "No account with that email address exists." });
@@ -142,24 +142,28 @@ exports.postForgotPassword = async (req, res, next) => {
   }
 
   const token = randomToken;
-  user.token = {
+  newToken = {
     resetPasswordToken: token,
     resetPasswordExpires: Date.now() + 3600000,
   };
+  
+  await User.updateOne(
+    { _id: user._id },
+    { $set: { token: newToken } },
+    {
+      new: true,
+    }
+  );
 
-  const resetEmail = {
-    to: user.email,
-    from: "passwordreset@report.com",
-    subject: "Password Reset",
-    text: `
+  const message = `
       You are receiving this because you (or someone else) have requested the reset of the password for your account.
       Please click on the following link, or paste this into your browser to complete the process:
-      http://${req.headers.host}/reset/${token}
+      http://${req.headers.host}/resetpassword/${token}
       If you did not request this, please ignore this email and your password will remain unchanged.
-    `,
-  };
+    `;
 
-  await transport.sendMail(resetEmail);
+  sendEmail(user.email, "Password Reset", message);
+
   req.flash("info", {
     msg: `An e-mail has been sent to ${user.email} with further instructions.`,
   });
@@ -170,33 +174,30 @@ exports.postForgotPassword = async (req, res, next) => {
 exports.getResetPassword = async (req, res) => {
   const users = req.user;
   const user = await User.find({
-    token: { resetPasswordToken: req.params.token },
+    "token.resetPasswordToken": req.params.token,
+    "token.resetPasswordExpires": { $gt: Date.now() },
   });
 
-  let token = user.token;
-  // check if the token is valid
-  const validToken =
-    token.resetPasswordExpires > Date.now() &&
-    promisify(token.resetPasswordToken, req.params.token);
-
-  if (validToken) {
-    res.render("resetpassword", {
-      title: "Reset password",
-      users,
+  if (!user) {
+    req.flash("error", {
+      msg: "Password reset token is invalid or has expired.",
     });
-  } else {
-    req.flash("error", "Password reset token is invalid or has expired.");
     return res.redirect("/forgotpassword");
   }
+
+  res.render("resetpassword", {
+    title: "Reset password",
+    users,
+  });
 };
 
 exports.postResetPassword = async (req, res, next) => {
   const validationErrors = [];
   const user = await User.find({
-    token: { resetPasswordToken: req.params.token },
+    "token.resetPasswordToken": req.params.token
   });
 
-  if (!user.token) {
+  if (!user) {
     req.flash("error", {
       msg: "Password reset token is invalid or has expired.",
     });
@@ -207,24 +208,24 @@ exports.postResetPassword = async (req, res, next) => {
     validationErrors.push({ msg: "Passwords do not match" });
   }
   if (validationErrors.length) {
-    req.flash("errors", {msg: validationErrors});
-    return res.redirect("../signup");
+    req.flash("errors", { msg: validationErrors });
+    return;
   }
 
   user.password = req.body.password;
-  user.token = {}
-  await user.save();
+  await User.updateOne(
+    { _id: user[0]._id },
+    { $set: { token: {} } },
+    {
+      new: true,
+    }
+  );
 
-  const resetEmail = {
-    to: user.email,
-    from: "passwordreset@report.com",
-    subject: "Your password has been changed",
-    text: `
-    This is a confirmation that the password for your account "${user.email}" has just been changed.
-    `,
-  };
+  const message = `
+  This is a confirmation that the password for your account "${user.email}" has just been changed.
+  `;
 
-  await transport.sendMail(resetEmail);
+  sendEmail(user.email, "passwordreset@report.com", message);
   req.flash("success", { msg: `Success! Your password has been changed.` });
 
   res.redirect("/");
