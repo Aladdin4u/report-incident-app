@@ -146,7 +146,7 @@ exports.postForgotPassword = async (req, res, next) => {
     resetPasswordToken: token,
     resetPasswordExpires: Date.now() + 3600000,
   };
-  
+
   await User.updateOne(
     { _id: user._id },
     { $set: { token: newToken } },
@@ -194,7 +194,7 @@ exports.getResetPassword = async (req, res) => {
 exports.postResetPassword = async (req, res, next) => {
   const validationErrors = [];
   const user = await User.find({
-    "token.resetPasswordToken": req.params.token
+    "token.resetPasswordToken": req.params.token,
   });
 
   if (!user) {

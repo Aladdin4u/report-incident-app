@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-    <%- include('partials/head.ejs') %>
-<body class="font-sans">
-    <%- include('partials/nav.ejs') %>
-
-    <div class="py-12 mt-12 w-full flex flex-col items-center">
+<div class="py-12 mt-12 w-full flex flex-col items-center">
         <form action="/signup" method="POST"  class="max-w-xl w-full text-gray-200 mt-4 px-8 md:px-0">
             <div class="flex flex-col md:flex-row md:-mx-2 mb-6">
                 <label for="userName" class="w-full mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Your username</label>
@@ -41,15 +35,3 @@
             </div>
         </form>
     </div>
-    
-   
-    <%- include('partials/footer.ejs') %>
-    <script>
-        const button = document.querySelector("#menu-button");
-        const menu = document.querySelector("#menu");
-        button.addEventListener("click", () => {
-            menu.classList.toggle("hidden");
-        });
-    </script>
-</body>
-</html>

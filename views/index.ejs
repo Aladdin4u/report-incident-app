@@ -1,12 +1,7 @@
-<!DOCTYPE html>
 
-    <%- include('partials/head.ejs') %>
-<body>
-    
-    <%- include('partials/nav.ejs') %>
-    <div class="content">
+<div class="content">
 
-      <header class="bg-gradient-to-r from-orange-900 to-orange-500 w-full px-4 py-3 flex justify-center border-b-4 border-orange-500">
+    <header class="bg-gradient-to-r from-orange-900 to-orange-500 w-full px-4 py-3 flex justify-center border-b-4 border-orange-500">
         <div class="max-w-4xl w-full">
             <div class="my-4">
                 <h1 class="text-xl text-white uppercase font-semibold">Accident near me!</h1>
@@ -19,7 +14,7 @@
                 </div>
             </div>
         </div>
-      </header>
+    </header>
 
       <div class="mt-4 flex flex-col justify-center items-center w-full">
         <h1 class="text-4xl font-bold capitalize">Topics</h1>
@@ -57,16 +52,4 @@
         
       </div>
 
-    </div>
-    
-
-    <%- include('partials/footer.ejs') %>
-    <script>
-        const button = document.querySelector("#menu-button");
-        const menu = document.querySelector("#menu");
-        button.addEventListener("click", () => {
-            menu.classList.toggle("hidden");
-        });
-    </script>
-</body>
-</html>
+</div>

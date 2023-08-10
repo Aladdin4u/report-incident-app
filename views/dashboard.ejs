@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-  <%- include('partials/head.ejs') %>
-  <body>
-    <%- include('partials/nav.ejs') %>
-    <div class="content">
+<div class="content">
       <div class="">
         <h3 class="text-center font-bold text-2xl capitalize text-orange-500">
           Dashboard
@@ -77,14 +72,3 @@
         <% } %>
       </div>
     </div>
-
-    <%- include('partials/footer.ejs') %>
-    <script>
-      const button = document.querySelector("#menu-button");
-      const menu = document.querySelector("#menu");
-      button.addEventListener("click", () => {
-        menu.classList.toggle("hidden");
-      });
-    </script>
-  </body>
-</html>

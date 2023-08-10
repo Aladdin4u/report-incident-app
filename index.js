@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
+const ejsLayouts = require("express-ejs-layouts")
 const morgan = require("morgan");
 const methodOverride = require("method-override");
 const flash = require("express-flash");
@@ -24,6 +25,7 @@ app.use(express.json());
 
 // Set Ejs templating engine
 app.set("view engine", "ejs");
+app.use(ejsLayouts);
 
 // Logging
 if (process.env.NODE_ENV === "development") {

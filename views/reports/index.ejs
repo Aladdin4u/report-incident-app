@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-
-    <%- include('../partials/head.ejs') %>
-<body>
-    
-    <%- include('../partials/nav.ejs') %>
-    <div class="content">
+<div class="content">
 
         <div class="">
             <h2 class="font-bold capitalize text-2xl text-center text-orange-500">all Reports</h2>
@@ -29,15 +23,3 @@
             <button class="bg-transparent hover:bg-orange-500 text-orange-700 font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded mb-4">Dashboard</button>
         </a>
     </div>
-    
-
-    <%- include('../partials/footer.ejs') %>
-    <script>
-        const button = document.querySelector("#menu-button");
-        const menu = document.querySelector("#menu");
-        button.addEventListener("click", () => {
-            menu.classList.toggle("hidden");
-        });
-    </script>
-</body>
-</html>

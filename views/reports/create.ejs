@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-  <%- include('../partials/head.ejs') %>
-  <body>
-    <%- include('../partials/nav.ejs') %>
-
-    <div class="create-report">
+<div class="create-report">
       <form action="/reports" enctype="multipart/form-data" method="POST">
         <label for="title">Report title</label>
         <input type="text" id="title" name="title" required />
@@ -33,14 +27,3 @@
         </a>
       </div>
     </div>
-
-    <%- include('../partials/footer.ejs') %>
-    <script>
-      const button = document.querySelector("#menu-button");
-      const menu = document.querySelector("#menu");
-      button.addEventListener("click", () => {
-        menu.classList.toggle("hidden");
-      });
-    </script>
-  </body>
-</html>
