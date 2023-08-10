@@ -9,7 +9,7 @@ module.exports = function (passport) {
           return done(err);
         }
         if (!user) {
-          return done(null, false, { msg: `Email ${email} not found.` });
+          return done(null, false, { msg: `Invalid email or password!.` });
         }
         if (!user.password) {
           return done(null, false, {
@@ -23,7 +23,7 @@ module.exports = function (passport) {
           if (isMatch) {
             return done(null, user);
           }
-          return done(null, false, { msg: "Invalid email or password." });
+          return done(null, false, { msg: "Invalid email or password!." });
         });
       });
     })
