@@ -4,38 +4,37 @@ const Report = require("../models/Report");
 module.exports = {
   getDashboard: async function (req, res) {
     try {
-      const users = req.user;
+      const username = req.user.userName;
       const reports = await Report.find({ user: req.user.id })
         .sort({ createdAt: "desc" })
         .lean();
       res.render("dashboard.ejs", {
         reports,
         title: "dashboard",
-        name: req.user.userName,
-        users,
+        username
       });
     } catch (err) {
       console.log(err);
       res.render("error/404");
     }
   },
-  reportIndex: async function (req, res) {
+  getAllReport: async function (req, res) {
     try {
-      const users = req.user;
+      const username = req.user.userName;
       const reports = await Report.find()
         .populate("user")
         .sort({ createdAt: "desc" })
         .lean();
   
-      res.render("reports/index", { reports, title: "Home", users });
+      res.render("reports/index", { reports, title: "Home", username });
     } catch (err) {
       console.error(err);
       res.render("/error/404");
     }
   },
-  reportDetails: async function (req, res)  {
+  getReportDetails: async function (req, res)  {
     try {
-      const users = req.user;
+      const username = req.user.userName;
       const report = await Report.findById({ _id: req.params.id })
         .populate("user")
         .lean();
@@ -43,23 +42,22 @@ module.exports = {
       if (!report) {
         return res.render("/error/404");
       }
-      res.render("reports/details", { report, title: "Report Details", users });
+      res.render("reports/details", { report, title: "Report Details", username });
     } catch (err) {
       console.error(err);
       res.render("/error/404", { title: "Report not found" });
     }
   },
-  reportCreateGet: async function (req, res) {
-    const users = req.user;
-    res.render("reports/create", { title: "Create a new Report", users });
+  getCreate: async function (req, res) {
+    const username = req.user.userName;
+    res.render("reports/create", { title: "Create a new Report", username });
   },
-  reportCreatePost: async function (req, res) {
+  create: async function (req, res) {
     try {
-      const users = req.user;
+      const username = req.user.userName;
       req.body.user = req.user.id;
       // Upload image to cloudinary
       const result = await cloudinary.uploader.upload(req.file.path);
-      console.log(result);
   
       await Report.create({
         title: req.body.title,
@@ -74,9 +72,8 @@ module.exports = {
       console.log(err);
     }
   },
-  reportDelete: async function (req, res)  {
+  delete: async function (req, res)  {
     try {
-      const users = req.user;
       // Find post by id
       let report = await Report.findById({ _id: req.params.id });
       // Delete image from cloudinary
@@ -89,10 +86,9 @@ module.exports = {
       res.redirect("/error/404");
     }
   },
-  reportEdit: async function (req, res) {
-    const users = req.user;
+  edit: async function (req, res) {
+    const username = req.user.userName;
     const report = await Report.findOne({ _id: req.params.id }).lean();
-  
     if (!report) {
       return res.render("/error/404");
     }
@@ -100,26 +96,27 @@ module.exports = {
     if (report.user != req.user.id) {
       res.redirect("/report");
     } else {
-      res.render("reports/edit", { report, title: "Edit Report", users });
+      res.render("reports/edit", { report, title: "Edit Report", username });
     }
   },
-  reportUpdateEdit: async function (req, res) {
+  update: async function (req, res) {
     try {
-      const users = req.user;
+      let result;
       const report = await Report.findById({ _id: req.params.id }).lean();
-  
+  console.log("repor -+-=" ,report)
       if (!report) {
-        return res.render("error/404");
+        return res.redirect("/error/404");
       }
   
       if (report.user != req.user.id) {
         res.redirect("/reports");
       } else {
-        let report = await Report.findById({ _id: req.params.id });
-        // Delete image from cloudinary
-        await cloudinary.uploader.destroy(report.cloudinaryId);
-        // Upload image to cloudinary
-        const result = await cloudinary.uploader.upload(req.file.path);
+        if(req.file.path) {
+          // Delete image from cloudinary
+          await cloudinary.uploader.destroy(report.cloudinaryId);
+          // Upload image to cloudinary
+          result = await cloudinary.uploader.upload(req.file.path);
+        }
   
         const updates = {
           title: req.body.title || report.title,
@@ -139,7 +136,7 @@ module.exports = {
       }
     } catch (err) {
       console.error(err);
-      res.redirect("error/404");
+      res.redirect("/error/404");
     }
   },
 };

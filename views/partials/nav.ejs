@@ -8,7 +8,7 @@
       </a>
     </div>
     <div class="flex justify-center items-center">
-      <% if (!users) {%>
+      <% if (!username) {%>
       <a href="/login">
         <button
           type="button"
@@ -17,7 +17,7 @@
           Login
         </button>
       </a>
-      <% } else {%> <%= "" %> <% } %>
+      <% } %>
 
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -66,6 +66,21 @@
         <li>
           <a
             class="py-2 block text-gray-700 rounded hover:bg-gray-100 text-center"
+            href="/reports"
+            >Reports</a
+          >
+        </li>
+        <li>
+          <a
+            class="py-2 block text-gray-700 rounded hover:bg-gray-100 text-center"
+            href="/about"
+            >About</a
+          >
+        </li>
+        <% if (username) {%>
+        <li>
+          <a
+            class="py-2 block text-gray-700 rounded hover:bg-gray-100 text-center"
             href="/dashboard"
             >Dashboard</a
           >
@@ -79,25 +94,12 @@
         </li>
         <li>
           <a
-            class="py-2 block text-gray-700 rounded hover:bg-gray-100 text-center"
-            href="/reports"
-            >Reports</a
-          >
-        </li>
-        <li>
-          <a
-            class="py-2 block text-gray-700 rounded hover:bg-gray-100 text-center"
-            href="/about"
-            >About</a
-          >
-        </li>
-        <li>
-          <a
             class="py-2 block text-gray-700 rounded hover:bg-gray-100 hover:text-red-700 text-center"
             href="/logout"
             >Logout</a
           >
         </li>
+        <% } %>
       </ul>
     </div>
   </div>
