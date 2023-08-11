@@ -20,3 +20,8 @@ function readURL(input) {
     const img = (document.getElementById("img").src = newImg);
   }
 }
+
+const url = new URL(window.location.href);
+const search = new URLSearchParams(url);
+const q = search.get("token");
+console.log(q)
