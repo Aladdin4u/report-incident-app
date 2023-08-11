@@ -1,7 +1,5 @@
 <nav class="w-full flex flex-col justify-between items-center">
-  <div
-    class="flex flex-wrap px-6 md:px-0 items-center justify-between w-full py-4 text-lg text-gray-700 bg-white"
-  >
+  <div class="flex flex-wrap px-6 md:px-0 items-center justify-between w-full py-4 text-lg text-gray-700 bg-white">
     <div>
       <a href="/" class="font-bold text-2xl text-orange-500 uppercase">
         Report App
@@ -10,94 +8,43 @@
     <div class="flex justify-center items-center">
       <% if (!username) {%>
       <a href="/login">
-        <button
-          type="button"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg px-4 py-1 text-center mr-3"
-        >
+        <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg px-4 py-1 text-center mr-3">
           Login
         </button>
       </a>
       <% } %>
 
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        id="menu-button"
-        class="h-8 w-8 cursor-pointer block"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M4 6h16M4 12h16M4 18h16"
-        />
-      </svg>
-      <button class="hidden">
-        <svg
-          class="w-8 h-8"
-          id="menu-exit"
-          class="h-8 w-8 cursor-pointer"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12"
-          ></path>
+
+      <div id="menu-button" class="inline-block">
+        <svg class="btn w-8 h-8 cursor-pointer hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
         </svg>
-      </button>
+        <svg xmlns="http://www.w3.org/2000/svg" class="btn h-8 w-8 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </div>
     </div>
 
     <div class="hidden w-full" id="menu">
       <ul class="pt-4 text-base text-gray-700 flex flex-col">
         <li>
-          <a
-            class="py-2 block text-white bg-orange-500 hover:bg-orange-700 rounded text-center"
-            href="/"
-            >Home</a
-          >
+          <a class="py-2 block text-white bg-orange-500 hover:bg-orange-700 rounded text-center" href="/">Home</a>
         </li>
         <li>
-          <a
-            class="py-2 block text-gray-700 rounded hover:bg-gray-100 text-center"
-            href="/reports"
-            >Reports</a
-          >
+          <a class="py-2 block text-gray-700 rounded hover:bg-gray-100 text-center" href="/reports">Reports</a>
         </li>
         <li>
-          <a
-            class="py-2 block text-gray-700 rounded hover:bg-gray-100 text-center"
-            href="/about"
-            >About</a
-          >
+          <a class="py-2 block text-gray-700 rounded hover:bg-gray-100 text-center" href="/about">About</a>
         </li>
         <% if (username) {%>
         <li>
-          <a
-            class="py-2 block text-gray-700 rounded hover:bg-gray-100 text-center"
-            href="/dashboard"
-            >Dashboard</a
-          >
+          <a class="py-2 block text-gray-700 rounded hover:bg-gray-100 text-center" href="/dashboard">Dashboard</a>
         </li>
         <li>
-          <a
-            class="py-2 block text-gray-700 rounded hover:bg-gray-100 text-center"
-            href="/reports/create"
-            >New Report</a
-          >
+          <a class="py-2 block text-gray-700 rounded hover:bg-gray-100 text-center" href="/reports/create">New Report</a>
         </li>
         <li>
-          <a
-            class="py-2 block text-gray-700 rounded hover:bg-gray-100 hover:text-red-700 text-center"
-            href="/logout"
-            >Logout</a
-          >
+          <a class="py-2 block text-gray-700 rounded hover:bg-gray-100 hover:text-red-700 text-center" href="/logout">Logout</a>
         </li>
         <% } %>
       </ul>

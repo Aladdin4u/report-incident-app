@@ -5,18 +5,18 @@ const sendEmail = require("../utils/sendEmail");
 const { randomToken, promisify } = require("../utils/crypto");
 
 exports.getLogin = (req, res) => {
-  const users = req.user;
+  const username = req.user;
   if (req.user) {
     return res.redirect("/dashboard");
   }
   res.render("login", {
     title: "Login",
-    users,
+    username,
   });
 };
 
 exports.postLogin = (req, res, next) => {
-  // const users = req.user;
+  // const username = req.user;
   console.log(req.body)
   const validationErrors = [];
   if (!validator.isEmail(req.body.email)) {
@@ -65,18 +65,18 @@ exports.logout = (req, res) => {
 };
 
 exports.getSignup = (req, res) => {
-  const users = req.user;
+  const username = req.user;
   if (req.user) {
     return res.redirect("/dashboard");
   }
   res.render("signup", {
     title: "Create Account",
-    users,
+    username,
   });
 };
 
 exports.postSignup = (req, res, next) => {
-  const users = req.user;
+  const username = req.user;
   const validationErrors = [];
   if (!validator.isEmail(req.body.email))
     validationErrors.push({ msg: "Please enter a valid email address." });
@@ -127,10 +127,10 @@ exports.postSignup = (req, res, next) => {
 };
 
 exports.getForgotPassword = (req, res) => {
-  const users = req.user;
+  const username = req.user.userName;
   res.render("forgotpassword", {
     title: "Forgot password",
-    users,
+    username,
   });
 };
 
@@ -173,7 +173,7 @@ exports.postForgotPassword = async (req, res, next) => {
 };
 
 exports.getResetPassword = async (req, res) => {
-  const users = req.user;
+  const username = req.user.userName;
   const user = await User.find({
     "token.resetPasswordToken": req.params.token,
     "token.resetPasswordExpires": { $gt: Date.now() },
@@ -188,7 +188,7 @@ exports.getResetPassword = async (req, res) => {
 
   res.render("resetpassword", {
     title: "Reset password",
-    users,
+    username,
   });
 };
 
