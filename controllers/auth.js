@@ -196,6 +196,7 @@ exports.postResetPassword = async (req, res, next) => {
   const validationErrors = [];
   const user = await User.find({
     "token.resetPasswordToken": req.params.token,
+    "token.resetPasswordExpires": { $gt: Date.now() },
   });
 
   if (!user) {

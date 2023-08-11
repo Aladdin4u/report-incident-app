@@ -102,8 +102,8 @@ module.exports = {
   update: async function (req, res) {
     try {
       let result;
-      const report = await Report.findById({ _id: req.params.id }).lean();
-  console.log("repor -+-=" ,report)
+      let report = await Report.findById({ _id: req.params.id }).lean();
+  console.log("repor -+-=" ,report, req.file)
       if (!report) {
         return res.redirect("/error/404");
       }
@@ -111,7 +111,7 @@ module.exports = {
       if (report.user != req.user.id) {
         res.redirect("/reports");
       } else {
-        if(req.file.path) {
+        if(req.file) {
           // Delete image from cloudinary
           await cloudinary.uploader.destroy(report.cloudinaryId);
           // Upload image to cloudinary
@@ -121,8 +121,8 @@ module.exports = {
         const updates = {
           title: req.body.title || report.title,
           withness: req.body.withness || report.withness,
-          image: result.secure_url || report.image,
-          cloudinaryId: result.public_id || report.cloudinaryId,
+          image: report.image || result.secure_url,
+          cloudinaryId: report.cloudinaryId || result.public_id,
           tbody: req.body.tbody || report.tbody,
           user: req.user.id,
         };

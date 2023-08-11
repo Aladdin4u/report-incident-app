@@ -1,70 +1,49 @@
-<!-- <div class="create-report">
-        <form action="/reports/edit/<%= report._id %>?_method=PUT" enctype="multipart/form-data" method="POST">
-            <label for="title">Report title</label>
-            <input type="text" id="title" name="title" value="<%= report.title %>" required>
-            <label for="withness">I am </label>       
-            <select name="withness" id="withness">
-                <option value="victim" <%= report.withness === 'victim' ? 'selected' : '' %> >victim</option>
-                <option value="bystander" <%= report.withness === 'bystander' ? 'selected' : '' %> >Bystander</option>
-            </select>
-            <label for="tbody">Tell Us Your Report</label>
-            <textarea id="tbody" name="tbody" required><%= report.tbody %></textarea>
-            <label for="imgUpload">Image</label>
-            <input type="file"  id="imageUpload" name="file">
-            <input type="submit" value="Save" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"> 
-        </form>
-        <div class="content" style="max-width: 400px;">
-            <a href="/dashboard">
-                <button class="w-full bg-transparent hover:bg-rose-500 text-rose-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">Cancel</button>
-            </a>
+<a href="/dashboard" class="flex items-center justify-start">
+  <button class="bg-transparent hover:bg-orange-500 text-orange-700 font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded mb-4"><svg class="w-6 h-6 inline-block" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4" />
+    </svg> Back
+  </button>
+</a>
+<form action="/reports/edit/<%= report._id %>?_method=PUT" enctype="multipart/form-data" method="POST" class="w-full mx-auto px-6 mb-6">
+  <div class="mb-6">
+    <h2 class="text-base font-semibold leading-7 text-gray-900">Edit report</h2>
+    <p class="mt-1 text-sm leading-6 text-gray-600">Give details of the report</p>
+  </div>
+  <div class="mb-6">
+    <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Report title</label>
+    <input type="text" name="title" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="<%= report.title %>" placeholder="report title" required>
+  </div>
+  <div class="mb-6">
+    <label for="withness" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">I am</label>
+    <select name="withness" id="withness" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+      <option value="" value="bystander" <%= report.withness === '' ? 'selected' : '' %>>-- Choose a withness --</option>
+      <option value="victim" value="victim" <%= report.withness === 'victim' ? 'selected' : '' %>>victim</option>
+      <option value="bystander" value="bystander" <%= report.withness === 'bystander' ? 'selected' : '' %>>Bystander</option>
+    </select>
+  </div>
+  <div class="mb-6">
+    <label for="tbody" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tell Us Your Report</label>
+    <textarea id="tbody" name="tbody" rows="3" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"><%= report.tbody %></textarea>
+  </div>
+  <div class="mb-6">
+    <label for="file-upload" class="block text-sm font-medium leading-6 text-gray-900">Cover photo</label>
+    <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+      <div class="text-center">
+        <svg class="mx-auto h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
+        </svg>
+        <div class="mt-4 flex text-sm leading-6 text-gray-600">
+          <label for="file-upload" class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+            <span>Upload a file</span>
+            <input id="file-upload" name="file" type="file" class="sr-only">
+          </label>
+          <p class="pl-1">or drag and drop</p>
         </div>
-    </div> -->
-
-    <a href="/dashboard" class="flex items-center justify-start">
-        <button class="bg-transparent hover:bg-orange-500 text-orange-700 font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded mb-4"><svg class="w-6 h-6 inline-block" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
-      </svg> Back
-        </button>
-      </a>
-      <form action="/reports/edit/<%= report._id %>?_method=PUT" enctype="multipart/form-data" method="POST" class="w-full mx-auto px-6 mb-6">
-        <div class="mb-6">
-          <h2 class="text-base font-semibold leading-7 text-gray-900">Edit report</h2>
-          <p class="mt-1 text-sm leading-6 text-gray-600">Give details of the report</p>
-        </div>
-        <div class="mb-6">
-          <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Report title</label>
-          <input type="text" name="title" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="<%= report.title %>" placeholder="report title" required>
-        </div>
-        <div class="mb-6">
-          <label for="withness" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">I am</label>
-          <select name="withness" id="withness" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            <option value="" value="bystander" <%= report.withness === '' ? 'selected' : '' %>>-- Choose a withness --</option>
-            <option value="victim" value="victim" <%= report.withness === 'victim' ? 'selected' : '' %> >victim</option>
-            <option value="bystander" value="bystander" <%= report.withness === 'bystander' ? 'selected' : '' %> >Bystander</option>
-          </select>
-        </div>
-        <div class="mb-6">
-          <label for="tbody" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tell Us Your Report</label>
-          <textarea id="tbody" name="tbody" rows="3" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"><%= report.tbody %></textarea>
-        </div>
-        <div class="mb-6">
-          <label for="file-upload" class="block text-sm font-medium leading-6 text-gray-900">Cover photo</label>
-          <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-            <div class="text-center">
-              <svg class="mx-auto h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
-              </svg>
-              <div class="mt-4 flex text-sm leading-6 text-gray-600">
-                <label for="file-upload" class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
-                  <span>Upload a file</span>
-                  <input id="file-upload" name="file" type="file" class="sr-only">
-                </label>
-                <p class="pl-1">or drag and drop</p>
-              </div>
-              <p class="text-xs leading-5 text-gray-600">PNG, JPG, JPEG up to 10MB</p>
-            </div>
-          </div>
-        </div>
-        <%- include('../partials/error.ejs') %>
-        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update report</button>
-      </form>
+        <p class="text-xs leading-5 text-gray-600">PNG, JPG, JPEG up to 10MB</p>
+      </div>
+      <img id="img" src="<%= report.image %>" alt="uploaded image" width="150" height="200">
+    </div>
+  </div>
+  <%- include('../partials/error.ejs') %>
+  <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update report</button>
+</form>
