@@ -19,7 +19,7 @@ module.exports = {
   },
   getAllReport: async function (req, res, next) {
     try {
-      const username = req.user.userName;
+      const username = req.user;
       const reports = await Report.find()
         .populate("user")
         .sort({ createdAt: "desc" })

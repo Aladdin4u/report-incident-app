@@ -1,21 +1,16 @@
 const Report = require("../models/Report");
 module.exports = {
-  getIndex: async (req, res) => {
+  getIndex: async (req, res, next) => {
     try {
-      const users = req.user;
-      const reports = await Report.find()
-        .populate("user")
-        .sort({ createdAt: "desc" })
-        .lean();
-
-      res.render("index.ejs", { reports, title: "Home", users });
+      const username = req.user;
+      res.render("index.ejs", { title: "Home", username });
     } catch (err) {
       console.error(err);
-      res.render("error/404");
+      next(err)
     }
   },
   getAbout: (req, res) => {
-    const users = req.user;
-    res.render("about.ejs", { title: "About", users });
+    const username = req.user;
+    res.render("about.ejs", { title: "About", username });
   },
 };
