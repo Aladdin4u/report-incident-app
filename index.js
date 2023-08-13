@@ -63,20 +63,29 @@ app.listen(
 );
 
 // 404 page
-// app.use((err, req, res, next) => {
-//   const errorStatus = err.status || 500;
-//   const errorMessage = err.message || "Something went wrong!";
-//   res.status(errorStatus).render("error/404", {
-//     title: "404",
-//     username: req.user,
-//     error: {
-//       success: false,
-//       status: errorStatus,
-//       message: errorMessage,
-//       stack: err.stack,
-//     },
-//   });
-// });
+app.use((err, req, res, next) => {
+  const errorStatus = err.status || 500;
+  const errorMessage = err.message || "Something went wrong!";
+  if(errorStatus === 404) {
+    res.status(errorStatus).render("error/404", {
+      title: "404",
+      username: req.user,
+      error: {
+        success: false,
+        status: errorStatus,
+        message: errorMessage,
+        stack: err.stack,
+      },
+    });
+  } else {
+    res.status(errorStatus).json({
+      success: false,
+      status: errorStatus,
+      message: errorMessage,
+      stack: err.stack,
+    })
+  }
+});
 
 // Export the Express API
 module.exports = app;

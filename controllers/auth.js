@@ -58,7 +58,7 @@ exports.logout = (req, res, next) => {
       console.log("User has logged out.");
     });
     req.session.destroy((err) => {
-      if (err) return next(err)
+      if (err) return next(err);
       req.user = null;
       return res.redirect("/");
     });
@@ -170,7 +170,7 @@ exports.postForgotPassword = async (req, res, next) => {
     const message = `
       You are receiving this because you (or someone else) have requested the reset of the password for your account.
       Please click on the following link, or paste this into your browser to complete the process:
-      http://${req.headers.host}/resetpassword/${token}
+      http://${req.headers.host}/resetpassword/${user._id}/?token=${token}
       If you did not request this, please ignore this email and your password will remain unchanged.
     `;
 
@@ -187,75 +187,66 @@ exports.postForgotPassword = async (req, res, next) => {
 };
 
 exports.getResetPassword = async (req, res, next) => {
-  console.log("token==",req.params.token)
   try {
     const username = req.user;
-    const user = await User.find({
-      "token.resetPasswordToken": req.params.token,
-      "token.resetPasswordExpires": { $gt: Date.now() },
-    });
-console.log(user)
-    if (!user) {
+    const user = await User.findOne({ _id: req.params.id });
+
+    const isValid =
+      promisify(user.token.resetPasswordToken, req.query.token) &&
+      user.token.resetPasswordExpires > Date.now();
+    if (!isValid) {
       req.flash("error", {
         msg: "Password reset token is invalid or has expired.",
       });
       return res.redirect("/forgotpassword");
     }
-    console.log("successfull ")
+
     res.render("resetpassword", {
       title: "Reset password",
       username,
     });
   } catch (err) {
-    next(err)
+    next(err);
   }
 };
 
 exports.updateResetPassword = async (req, res, next) => {
-  console.log(req.url)
-  console.log(req.protocol)
-  console.log(req.body)
-  // try {
-  //   const validationErrors = [];
-  //   const user = await User.find({
-  //     "token.resetPasswordToken": req.params.token,
-  //     "token.resetPasswordExpires": { $gt: Date.now() },
-  //   });
-  //   console.log(user)
+  console.log("url=",req.url)
+  console.log("params=",req.params.id)
+  console.log("quary",req.query.token)
+  try {
+    const user = await User.findOne({ _id: req.params.id });
 
-  //   if (!user) {
-  //     console.log("Password reset token is invalid or has expired.")
-  //     req.flash("error", {
-  //       msg: "Password reset token is invalid or has expired.",
-  //     });
-  //     return res.redirect("/forgotpassword");
-  //   }
+    const isValid = 
+    promisify(user.token.resetPasswordToken, req.query.token) &&
+    user.token.resetPasswordExpires > Date.now();
+    if (!isValid) {
+      console.log("Password reset token is invalid or has expired.");
+      req.flash("error", {
+        msg: "Password reset token is invalid or has expired.",
+      });
+      return res.redirect("/forgotpassword");
+    }
 
-  //   if (req.body.password !== req.body.confirmPassword) {
-  //     validationErrors.push({ msg: "Passwords do not match" });
-  //   }
-  //   if (validationErrors.length) {
-  //     req.flash("errors", { msg: validationErrors });
-  //   }
+    if (req.body.password !== req.body.confirmPassword) {
+      req.flash("errors", { msg: "Passwords do not match" });
+      return res.redirect(`/resetpassword/${req.params.token}`);
+    }
 
-  //   user.password = req.body.password;
-  //   await User.updateOne(
-  //     { _id: user[0]._id },
-  //     { $set: { token: {} } },
-  //     {
-  //       new: true,
-  //     }
-  //   );
+    user.password = req.body.password;
+    user.token = {};
+    await user.save();
+    console.log(user);
 
-  //   const message = `
-  // This is a confirmation that the password for your account "${user.email}" has just been changed.
-  // `;
+    const message = `
+  This is a confirmation that the password for your account "${user.email}" has just been changed.
+  `;
 
-  //   await sendEmail(user.email, "passwordreset@report.com", message);
-  //   req.flash("success", { msg: `Success! Your password has been changed.` });
+    await sendEmail(user.email, "passwordreset@report.com", message);
+    req.flash("success", { msg: `Success! Your password has been changed.` });
 
-  //   res.redirect("/login");
-  // } catch (err) {
-  //   next(err);
-  // }
+    res.redirect("/login");
+  } catch (err) {
+    next(err);
+  }
 };

@@ -23,7 +23,11 @@ function readURL(input) {
 
 const url = new URL(window.location.href);
 const path= url.pathname.split("/")[2];
-console.log(path)
-const search = new URLSearchParams(url);
-const q = search.get("token");
-console.log(q)
+
+const formId = document.getElementById("resetpassword");
+if(formId) {
+  console.log(formId)
+  const formAction = formId.action = `/resetpassword/${path}/${url.search}`
+  console.log(formAction)
+
+}
