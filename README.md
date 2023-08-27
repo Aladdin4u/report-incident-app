@@ -1,6 +1,6 @@
 # Report App
 
-Report App for user to create, edit and delete report with the details with what has occured in real-time
+Report App helps organizations to determine and secure personal and professional boundaries between employees. It helps deal with integrity violations and unwanted behavior. At the same time, it helps employees and employers to become more resilient in case they experience unwanted manners.
 
 **Link to project:** https://reportaapp.onrender.com
 
